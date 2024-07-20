@@ -13,7 +13,6 @@ double hit_sphere(const Point3& center, double radius, const Ray& r) {
     //auto b = -2.0 * dot(r.direction(), oc);
     //auto c = dot(oc, oc) - radius*radius;
     //auto discriminant = b*b - 4*a*c;
-    //nibber
     
     auto a = r.direction().length_squared();
     auto h = dot(r.direction(), oc);
