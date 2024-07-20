@@ -1,3 +1,0 @@
-/home/sava/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/RayTracer.dir
-/home/sava/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/edit_cache.dir
-/home/sava/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/rebuild_cache.dir
