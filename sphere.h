@@ -2,7 +2,7 @@
 #define SPHERE_H
 
 #include "hittable.h"
-#include "vec3.h"
+#include "mat.h"
 
 class Sphere : public Hittable {
 public:
@@ -31,7 +31,8 @@ public:
 
         rec.t = root;
         rec.p = r.at(rec.t);
-        rec.normal = (rec.p - center) / radius;
+        Vec3 outward_normal = (rec.p - center) / radius; //calculate normal + normalization
+        rec.set_face_normal(r, outward_normal); //set normal direction
         
         return true;
     }
