@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/cosinus/repos/Ray-Tracer-In-Cpp/out/build/newPreset"
+			"value" : "/home/sava/repos/Ray-Tracer-In-Cpp/out/build/newPreset"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -595,7 +595,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/cosinus/repos/Ray-Tracer-In-Cpp"
+			"value" : "/home/sava/repos/Ray-Tracer-In-Cpp"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -607,7 +607,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/home/cosinus/repos/Ray-Tracer-In-Cpp/out/install/newPreset"
+			"value" : "/home/sava/repos/Ray-Tracer-In-Cpp/out/install/newPreset"
 		},
 		{
 			"name" : "CMAKE_INSTALL_SO_NO_EXE",
@@ -1191,7 +1191,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/cosinus/repos/Ray-Tracer-In-Cpp/out/build/newPreset"
+			"value" : "/home/sava/repos/Ray-Tracer-In-Cpp/out/build/newPreset"
 		},
 		{
 			"name" : "RayTracer_IS_TOP_LEVEL",
@@ -1215,7 +1215,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/cosinus/repos/Ray-Tracer-In-Cpp"
+			"value" : "/home/sava/repos/Ray-Tracer-In-Cpp"
 		}
 	],
 	"kind" : "cache",

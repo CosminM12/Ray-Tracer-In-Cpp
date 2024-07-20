@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/cosinus/repos/Ray-Tracer-In-Cpp/out/build/newPreset",
-		"source" : "/home/cosinus/repos/Ray-Tracer-In-Cpp"
+		"build" : "/home/sava/repos/Ray-Tracer-In-Cpp/out/build/newPreset",
+		"source" : "/home/sava/repos/Ray-Tracer-In-Cpp"
 	},
 	"version" : 
 	{

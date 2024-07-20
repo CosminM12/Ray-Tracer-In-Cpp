@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cosinus/repos/Ray-Tracer-In-Cpp
+CMAKE_SOURCE_DIR = /home/sava/repos/Ray-Tracer-In-Cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cosinus/repos/Ray-Tracer-In-Cpp/build/Debug
+CMAKE_BINARY_DIR = /home/sava/repos/Ray-Tracer-In-Cpp/build/Debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cosinus/repos/Ray-Tracer-In-Cpp/build/Debug/CMakeFiles /home/cosinus/repos/Ray-Tracer-In-Cpp/build/Debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sava/repos/Ray-Tracer-In-Cpp/build/Debug/CMakeFiles /home/sava/repos/Ray-Tracer-In-Cpp/build/Debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cosinus/repos/Ray-Tracer-In-Cpp/build/Debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sava/repos/Ray-Tracer-In-Cpp/build/Debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

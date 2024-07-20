@@ -1,5 +1,5 @@
 CMakeFiles/RayTracer.dir/main.cpp.o: \
- /home/cosinus/repos/Ray-Tracer-In-Cpp/main.cpp \
+ /home/sava/repos/Ray-Tracer-In-Cpp/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

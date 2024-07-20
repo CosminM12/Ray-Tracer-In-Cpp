@@ -1,7 +1,7 @@
 CMakeFiles/RayTracer.dir/main.cpp.o: \
- /home/cosinus/repos/Ray-Tracer-In-Cpp/main.cpp \
- /usr/include/stdc-predef.h /home/cosinus/repos/Ray-Tracer-In-Cpp/color.h \
- /home/cosinus/repos/Ray-Tracer-In-Cpp/vec3.h /usr/include/c++/11/cmath \
+ /home/sava/repos/Ray-Tracer-In-Cpp/main.cpp /usr/include/stdc-predef.h \
+ /home/sava/repos/Ray-Tracer-In-Cpp/color.h \
+ /home/sava/repos/Ray-Tracer-In-Cpp/vec3.h /usr/include/c++/11/cmath \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -170,4 +170,4 @@ CMakeFiles/RayTracer.dir/main.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
- /home/cosinus/repos/Ray-Tracer-In-Cpp/ray.h
+ /home/sava/repos/Ray-Tracer-In-Cpp/ray.h
