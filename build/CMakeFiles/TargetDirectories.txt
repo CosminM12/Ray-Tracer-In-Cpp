@@ -1,3 +1,0 @@
-/home/cosinus/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/RayTracer.dir
-/home/cosinus/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/edit_cache.dir
-/home/cosinus/repos/Ray-Tracer-In-Cpp/build/CMakeFiles/rebuild_cache.dir
