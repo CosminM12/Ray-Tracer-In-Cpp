@@ -11,6 +11,7 @@ public:
     double aspect_ratio = 1.0; //ratio: Img-width / Img-height
     int image_width = 100;
     int samples_per_pixel = 10; //Number of random samples for each pixel
+    int max_depth = 10; //Maximum number of ray bounces into scene
 
     void render(const Hittable& world) {
         initialize();
@@ -29,7 +30,7 @@ public:
                 Color pixel_color(0, 0, 0);
                 for(int sample=0;sample<samples_per_pixel;sample++) { //for every random ray for a pixel
                     Ray r = get_ray(i, j);  //calculate color of rand point 
-                    pixel_color += ray_color(r, world); //add to pixel color
+                    pixel_color += ray_color(r, max_depth, world); //add to pixel color
                 }
                 write_color(cout, pixel_samples_scale * pixel_color); //divide global pixel color to num of rays
             }
@@ -93,10 +94,12 @@ private:
         return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
     }
 
-    Color ray_color(const Ray& r, const Hittable& world) const {
+    Color ray_color(const Ray& r, int depth, const Hittable& world) const {
+        if(depth <= 0) return Color(0, 0, 0); //If ray has no more bounces, return black(null)
         HitRecord rec;
-        if(world.hit(r, Interval(0, infinity), rec)) { //verify if ray hit the object
-            return 0.5 * (rec.normal + Color(1, 1, 1)); //return color of hit object
+        if(world.hit(r, Interval(0.001, infinity), rec)) { //verify if ray hit the object + not to close
+            Vec3 direction = random_on_hemisphere(rec.normal); //get a random "reflect" ray
+            return 0.5 * ray_color(Ray(rec.p, direction), depth-1, world); //return color of hit object
         }
 
         Vec3 unit_direction = unit_vector(r.direction());

@@ -45,6 +45,14 @@ public:
     double length_squared() const {
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
+
+    static Vec3 random() {  //return random Vec3
+        return Vec3(random_double(), random_double(), random_double());
+    }
+
+    static Vec3 random(double min, double max) {  //return random Vec3 with values between min and max
+        return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    }
 };
 
 //Point3 = alias for Vec3 -> geometric calrit in the code
@@ -88,6 +96,25 @@ inline Vec3 corss(const Vec3& u, const Vec3& v) { //Cross product
 
 inline Vec3 unit_vector(const Vec3& v) { //Normalize vector
     return v / v.length();
+}
+
+inline Vec3 random_in_unit_sphere() {  //Generate random rays until one is the correct direction
+    while(true) {
+        auto p = Vec3::random(-1, 1);
+        if(p.length_squared() < 1)
+            return p;
+    }
+}
+
+inline Vec3 random_unit_vector() {  //Normalizes the random ray
+    return unit_vector(random_in_unit_sphere());
+}
+
+inline Vec3 random_on_hemisphere(const Vec3& normal) { //check direction of reflected ray
+    Vec3 on_unit_sphere = random_unit_vector();
+    if(dot(on_unit_sphere, normal) > 0.0) //check if they are in the same hemisphere with the normal
+        return on_unit_sphere;
+    return -on_unit_sphere;
 }
 
 inline Vec3 normalize(const Vec3&v) { return unit_vector(v);}
