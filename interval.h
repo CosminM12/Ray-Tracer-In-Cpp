@@ -17,13 +17,20 @@ public:
         return max - min;
     }
 
-    bool contains(double x) const {
+    bool contains(double x) const { //between 2 margins (inclusive)
         return min <= x && x <= max;
     }
 
-    bool surrounds(double x) const {
+    bool surrounds(double x) const { //between 2 margins (exclusive) --is negated to verify if the value is outside the parameters
         return min < x && x < max;
     }
+
+    double clamp(double x) const {  //returns x value clampped between min and max;
+        if(x < min) return min;
+        if(x > max) return max;
+        return x;
+    }
+
 
     static const Interval empty, universe; 
 };
