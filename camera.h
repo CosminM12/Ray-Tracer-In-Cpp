@@ -3,6 +3,7 @@
 
 #include "mat.h"
 #include "hittable.h"
+#include "material.h"
 
 using namespace std;
 
@@ -95,8 +96,13 @@ private:
         HitRecord rec;
 
         if(world.hit(r, Interval(0.001, infinity), rec)) { //verify if the ray hit an object in 'world'
-            Vec3 direction = rec.normal + random_unit_vector(); //get a random "reflect" ray
-            return 0.5 * ray_color(Ray(rec.p, direction), depth-1, world); //return color of hit object
+           
+            Ray scattered;
+            Color attenuation;
+            if(rec.mat->scatter(r, rec, attenuation, scattered)) {  //create reflected ray
+                return attenuation * ray_color(scattered, depth-1, world); //return color of hit object
+            }
+            return Color(0, 0, 0);
         }
 
         Vec3 unit_direction = unit_vector(r.direction());

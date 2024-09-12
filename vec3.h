@@ -46,6 +46,11 @@ public:
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
 
+    bool near_zero() const {   //Verifies if one value of Vec3 is very close to 0
+        auto s = 1e-8;
+        return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
+    }
+
     static Vec3 random() {  //return random Vec3
         return Vec3(random_double(), random_double(), random_double());
     }
@@ -115,6 +120,13 @@ inline Vec3 random_on_hemisphere(const Vec3& normal) { //check direction of refl
     if(dot(on_unit_sphere, normal) > 0.0) //check if they are in the same hemisphere with the normal
         return on_unit_sphere;
     return -on_unit_sphere;
+}
+
+inline Vec3 reflect(const Vec3& v, const Vec3& n) {
+    return v - 2*dot(v, n)*n;
+    //R(reflected ray) = v(ray_in) + 2 * b(perpendicular from surface to R top)
+    //b - scale n by projection of v onto n
+    //  = dot product v*n   / n (to normalize)
 }
 
 inline Vec3 normalize(const Vec3&v) { return unit_vector(v);}

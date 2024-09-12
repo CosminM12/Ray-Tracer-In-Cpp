@@ -3,10 +3,13 @@
 
 #include "mat.h"
 
+class Material; //tell the compiler that Material will be defined later
+
 class HitRecord {
 public:
     Point3 p;
     Vec3 normal;
+    shared_ptr<Material> mat;
     double t;
     bool front_face;
 
