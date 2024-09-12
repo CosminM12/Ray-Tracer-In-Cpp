@@ -129,6 +129,16 @@ inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     //  = dot product v*n   / n (to normalize)
 }
 
+inline Vec3 refract(const Vec3& uv, const Vec3& n, double etai_over_etat) {
+    auto cos_theta = fmin(dot(-uv, n), 1.0);
+
+    //calculate refracted ray on x(perpendicular on the normal) and y(parallel to the normal) axis
+    Vec3 r_out_perp = etai_over_etat * (uv + cos_theta*n); 
+    Vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+
+    return r_out_perp + r_out_parallel;
+}
+
 inline Vec3 normalize(const Vec3&v) { return unit_vector(v);}
 
 #endif
