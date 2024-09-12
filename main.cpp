@@ -11,6 +11,9 @@ int main(int, char**){
     //World
     HittableList world;
 
+    auto R = cos(pi/4);
+
+
 
     //Materials
     auto material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
@@ -32,6 +35,12 @@ int main(int, char**){
     cam.image_width = 800;
     cam.samples_per_pixel = 100;
     cam.max_depth = 50;
+
+    //Camera position setings
+    cam.vfov = 20;
+    cam.lookfrom = Point3(-2, 2, 1);
+    cam.lookat = Point3(0, 0, -1);
+    cam.vup = Vec3(0, 1, 0);
 
     //Render the scene
     cam.render(world);

@@ -14,6 +14,12 @@ public:
     int samples_per_pixel = 10; //Number of random samples for each pixel (default)
     int max_depth = 10; //Maximum number of ray bounces into scene (default)
 
+    //Camera positions
+    double vfov = 90; //Vertical view angle
+    Point3 lookfrom = Point3(0, 0, 0); //camera origin
+    Point3 lookat = Point3(0, 0, -1); //camera orientation (w-axys)
+    Vec3 vup = Vec3(0, 1, 0);  //orientation of an 'up' vector
+
     void render(const Hittable& world) { //Creates output for image file
         initialize();
 
@@ -42,29 +48,38 @@ private:
     Vec3 pixel_delta_u; //Distance between pixels horizontal (to the right)
     Vec3 pixel_delta_v; //Distance between pixels vertical (below)
 
+    Vec3 u, v, w; //camer axys
+
     void initialize() {
         image_height = int(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height; //height cannot be less than 1 pixel
 
         pixel_samples_scale = 1.0 / samples_per_pixel; //instead of dividing each time, make 1 divison, then use it to multiply
 
-        center = Point3(0, 0, 0);
+        center = lookfrom;
 
         //Viewport dimensions
-        auto focal_length = 1;  //focal_length = distance from camera on the z-axis
-        auto viewport_height = 2.0;
+        auto focal_length = (lookfrom - lookat).length();  //focal_length = distance from camera on the z-axis
+        auto theta = degrees_to_radians(vfov);
+        auto h = tan(theta/2);
+        auto viewport_height = 2 * h * focal_length;
         auto viewport_width = viewport_height * (double(image_width)/image_height);
 
+        //Calculate u, v, w axys vectors for camera coords frmae
+        w = unit_vector(lookfrom - lookat);
+        u = unit_vector(cross(vup, w));
+        v = cross(w, u);
+
         //Vectors across the horizontal and vertical axis
-        auto viewport_u = Vec3(viewport_width, 0, 0);
-        auto viewport_v = Vec3(0, -viewport_height, 0); //inverted y-axis
+        Vec3 viewport_u = viewport_width * u; //vector across horiz edge
+        Vec3 viewport_v = viewport_height * -v; //inverted y-axis  | vector down vertical edge
 
         //Horizontal and vertical delta vectors between pixels
         pixel_delta_u = viewport_u / image_width;
         pixel_delta_v = viewport_v / image_height;
 
         //Upper left pixel location
-        auto viewport_upper_left = center - Vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
+        auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
             //camera-center - distance from camera to viewport plane - half_width - half_height
         pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
             //first pixel -> in the center of the first rectangle of viewport, of lengths du and dv
