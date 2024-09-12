@@ -8,12 +8,12 @@ using namespace std;
 
 class Camera {
 public:
-    double aspect_ratio = 1.0; //ratio: Img-width / Img-height
+    double aspect_ratio = 1.0;
     int image_width = 100;
-    int samples_per_pixel = 10; //Number of random samples for each pixel
-    int max_depth = 10; //Maximum number of ray bounces into scene
+    int samples_per_pixel = 10; //Number of random samples for each pixel (default)
+    int max_depth = 10; //Maximum number of ray bounces into scene (default)
 
-    void render(const Hittable& world) {
+    void render(const Hittable& world) { //Creates output for image file
         initialize();
 
         cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
@@ -21,34 +21,29 @@ public:
         for(int j=0;j<image_height;j++) {
             clog << "\rScanlines remaining: " << (image_height - j) << ' ' << flush;
             for(int i=0;i<image_width;i++) {
-                /*auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-                auto ray_direction = pixel_center - center;
-                Ray r(center, ray_direction);
-                Color pixel_color = ray_color(r, world);
-                write_color(cout, pixel_color);*/
-
                 Color pixel_color(0, 0, 0);
+
                 for(int sample=0;sample<samples_per_pixel;sample++) { //for every random ray for a pixel
-                    Ray r = get_ray(i, j);  //calculate color of rand point 
-                    pixel_color += ray_color(r, max_depth, world); //add to pixel color
+                    Ray r = get_ray(i, j);  //Create ray from origin to rand point 
+                    pixel_color += ray_color(r, max_depth, world); //add color from rand point to pixel color
                 }
-                write_color(cout, pixel_samples_scale * pixel_color); //divide global pixel color to num of rays
+                write_color(cout, pixel_samples_scale * pixel_color); //divide global pixel color to num of rays (avg color)
             }
         }
         clog << "\rDone.            \n";
     }
 
 private:
-    int image_height;   //Rendered image height
-    double pixel_samples_scale; //Color scale factor for sum of pixel samples
+    int image_height;
+    double pixel_samples_scale; //Color scale factor for sum of pixel samples = 1/(num of rand points per pixel)
     Point3 center;      //Camera center
     Point3 pixel00_loc; //Location of pixel (0,0)
-    Vec3 pixel_delta_u; //Offset to pixel to the right
-    Vec3 pixel_delta_v; //Offfset to pixel below
+    Vec3 pixel_delta_u; //Distance between pixels horizontal (to the right)
+    Vec3 pixel_delta_v; //Distance between pixels vertical (below)
 
     void initialize() {
         image_height = int(image_width / aspect_ratio);
-        image_height = (image_height < 1) ? 1 : image_height; //height cannot be less than 1
+        image_height = (image_height < 1) ? 1 : image_height; //height cannot be less than 1 pixel
 
         pixel_samples_scale = 1.0 / samples_per_pixel; //instead of dividing each time, make 1 divison, then use it to multiply
 
@@ -78,7 +73,7 @@ private:
         //Construct a ray from cam pos and point it at a random point for a pixel
         //Point around the (i, j) location of the pixel
 
-        auto offset = sample_square(); //Get ray pointing to the rand point
+        auto offset = sample_square(); //Get random offset from pixel center
         auto pixel_sample = pixel00_loc    //location of the rand point
                             + ((i + offset.x()) * pixel_delta_u)/*dist on x-axys*/
                             + ((j + offset.y()) * pixel_delta_v)/*dist on y-axis*/;
@@ -90,15 +85,17 @@ private:
     }
 
     Vec3 sample_square() const {
-        //Return the vector pointing to the random point in the unit square [-0.5, -0.5]-[0.5, 0.5]
+        //Return a random point in the unit square of the pixel [-0.5, -0.5]-[0.5, 0.5]
         return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
     }
 
-    Color ray_color(const Ray& r, int depth, const Hittable& world) const {
+    Color ray_color(const Ray& r, int depth, const Hittable& world) const {   ///Calculate color of ray
         if(depth <= 0) return Color(0, 0, 0); //If ray has no more bounces, return black(null)
+        
         HitRecord rec;
-        if(world.hit(r, Interval(0.001, infinity), rec)) { //verify if ray hit the object + not to close
-            Vec3 direction = random_on_hemisphere(rec.normal); //get a random "reflect" ray
+
+        if(world.hit(r, Interval(0.001, infinity), rec)) { //verify if the ray hit an object in 'world'
+            Vec3 direction = rec.normal + random_unit_vector(); //get a random "reflect" ray
             return 0.5 * ray_color(Ray(rec.p, direction), depth-1, world); //return color of hit object
         }
 
