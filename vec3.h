@@ -103,7 +103,15 @@ inline Vec3 unit_vector(const Vec3& v) { //Normalize vector
     return v / v.length();
 }
 
-inline Vec3 random_in_unit_sphere() {  //Generate random rays until one is the correct direction
+inline Vec3 random_in_unit_disk() {  //Generate random rays on a disk (2D)
+    while(true) {
+        auto p = Vec3(random_double(-1, 1), random_double(-1, 1), 0);
+        if(p.length_squared() < 1)
+            return p;
+    }
+}
+
+inline Vec3 random_in_unit_sphere() {  //Generate random rays (3D) until one is the correct direction
     while(true) {
         auto p = Vec3::random(-1, 1);
         if(p.length_squared() < 1)

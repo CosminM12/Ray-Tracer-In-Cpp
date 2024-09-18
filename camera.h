@@ -20,6 +20,9 @@ public:
     Point3 lookat = Point3(0, 0, -1); //camera orientation (w-axys)
     Vec3 vup = Vec3(0, 1, 0);  //orientation of an 'up' vector
 
+    double defocus_angle = 0; //Variation angle of rays through each pixel
+    double focus_dist = 10; //Distance from lookfrom to plane of perfect focus
+
     void render(const Hittable& world) { //Creates output for image file
         initialize();
 
@@ -48,7 +51,10 @@ private:
     Vec3 pixel_delta_u; //Distance between pixels horizontal (to the right)
     Vec3 pixel_delta_v; //Distance between pixels vertical (below)
 
-    Vec3 u, v, w; //camer axys
+    Vec3 u, v, w; //camera axys
+
+    Vec3 defocus_disk_u; //Defocus disk horizontal radius
+    Vec3 defocus_disk_v; //Defocus disk vertical radius
 
     void initialize() {
         image_height = int(image_width / aspect_ratio);
@@ -59,10 +65,10 @@ private:
         center = lookfrom;
 
         //Viewport dimensions
-        auto focal_length = (lookfrom - lookat).length();  //focal_length = distance from camera on the z-axis
+        //auto focal_length = (lookfrom - lookat).length();  //focal_length = distance from camera on the z-axis
         auto theta = degrees_to_radians(vfov);
         auto h = tan(theta/2);
-        auto viewport_height = 2 * h * focal_length;
+        auto viewport_height = 2 * h * focus_dist;
         auto viewport_width = viewport_height * (double(image_width)/image_height);
 
         //Calculate u, v, w axys vectors for camera coords frmae
@@ -79,10 +85,15 @@ private:
         pixel_delta_v = viewport_v / image_height;
 
         //Upper left pixel location
-        auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
+        auto viewport_upper_left = center - (focus_dist * w) - viewport_u/2 - viewport_v/2;
             //camera-center - distance from camera to viewport plane - half_width - half_height
         pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
             //first pixel -> in the center of the first rectangle of viewport, of lengths du and dv
+
+        //Calculate camera defocus disk vectors
+        auto defocus_radius = focus_dist * tan(degrees_to_radians(defocus_angle / 2));
+        defocus_disk_u = u * defocus_radius;
+        defocus_disk_v = v * defocus_radius;
     }
 
     Ray get_ray(int i, int j) const {
@@ -94,7 +105,7 @@ private:
                             + ((i + offset.x()) * pixel_delta_u)/*dist on x-axys*/
                             + ((j + offset.y()) * pixel_delta_v)/*dist on y-axis*/;
 
-        auto ray_origin = center;
+        auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
         auto ray_direction = pixel_sample - ray_origin; //dir = destination - origin
 
         return Ray(ray_origin, ray_direction);
@@ -103,6 +114,11 @@ private:
     Vec3 sample_square() const {
         //Return a random point in the unit square of the pixel [-0.5, -0.5]-[0.5, 0.5]
         return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
+    }
+
+    Point3 defocus_disk_sample() const { //Returns a rand point in camera defocus disk
+        auto p = random_in_unit_disk();
+        return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
     }
 
     Color ray_color(const Ray& r, int depth, const Hittable& world) const {   ///Calculate color of ray
